@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>حسابي</title>
+<style>
+body{margin:0;background:#10131c;color:white;font-family:Arial;text-align:center}
+h1{color:#72e5c0}
+#screen{margin:20px;padding:20px;background:#202636;border-radius:16px;font-size:32px;min-height:40px;text-align:left;direction:ltr}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:12px}
+button{height:65px;border:0;border-radius:14px;background:#293246;color:white;font-size:23px}
+.op{background:#167d70}.eq{background:#72e5c0;color:#10131c}
+</style>
+</head>
+<body>
+<h1>حسابي</h1>
+<div id="screen">0</div>
+<div class="grid">
+<button onclick="clearAll()">AC</button><button onclick="del()">⌫</button><button class="op" onclick="add('/')">÷</button><button class="op" onclick="add('*')">×</button>
+<button onclick="add('7')">7</button><button onclick="add('8')">8</button><button onclick="add('9')">9</button><button class="op" onclick="add('-')">−</button>
+<button onclick="add('4')">4</button><button onclick="add('5')">5</button><button onclick="add('6')">6</button><button class="op" onclick="add('+')">+</button>
+<button onclick="add('1')">1</button><button onclick="add('2')">2</button><button onclick="add('3')">3</button><button class="eq" onclick="calc()">=</button>
+<button onclick="add('0')">0</button><button onclick="add('.')">.</button>
+</div>
+<script>
+let exp='';
+const screen=document.getElementById('screen');
+function show(){screen.textContent=exp||'0'}
+function add(v){exp+=v;show()}
+function clearAll(){exp='';show()}
+function del(){exp=exp.slice(0,-1);show()}
+function calc(){
+ try{
+ if(!/^[0-9+\-*/.() ]+$/.test(exp))throw Error();
+ const result=Function('"use strict";return ('+exp+')')();
+ if(!Number.isFinite(result))throw Error();
+ exp=String(Number(result.toFixed(8)));show();
+ }catch(e){screen.textContent='خطأ';exp=''}
+}
+</script>
+</body>
+</html>
